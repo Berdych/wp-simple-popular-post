@@ -10,7 +10,6 @@
 Просмотров: <?php echo getPostViews(get_the_ID()); ?>
 
 3. Для сортировки и отображения постов по количеству просмотров в цикле ленты постов делаем запрос с определенными параметрами:
-
 <?php
 query_posts('cat=1&showposts=5&meta_key=post_views_count&orderby=meta_value_num');
 	while (have_posts()): the_post(); ?>
@@ -18,9 +17,7 @@ query_posts('cat=1&showposts=5&meta_key=post_views_count&orderby=meta_value_num'
 		<p><?php the_excerpt(); ?>
 	<?php endwhile; 
 wp_reset_query(); 
-?>
-
-где 
+?>, где 
 cat=1 - идентификатор рубрики; 
 showposts=5 - количество выводимых постов; 
 meta_key=post_views_count - мета-поле счетчика;
