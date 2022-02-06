@@ -2,45 +2,34 @@
 /*
 Plugin Name: Popular Posts WP
 Description: Подсчет и отображение постов по количеству просмотров.
-Author: aka Berdych <bizdirect@ya.ru>
-Author URI: http://berdov.blogpost.ru/
-Version: 1.0
+Author: Berdych <webbizdirect@gmail.com>
+Author URI: http://bizdirect.pro/
+Version: 1.0.1
 */
 
-function getPostViews($postID){
-    $count_key = 'post_views_count';
-    $count = get_post_meta($postID, $count_key, true);
-    if($count==''){
-        delete_post_meta($postID, $count_key);
-        add_post_meta($postID, $count_key, '0');
+function getPostViews( $postID ){
+    $count = get_post_meta( $postID, 'post_views_count', true );
+    if( $count == '' || $count == false ){
+        add_post_meta($postID, 'post_views_count', '0');
         return "0";
     }
     return $count;
 }
-remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
 
-
-function setPostViews($postID) {
-    $count_key = 'post_views_count';
-    $count = get_post_meta($postID, $count_key, true);
-    if($count==''){
-        $count = 0;
-        delete_post_meta($postID, $count_key);
-        add_post_meta($postID, $count_key, '0');
-    }else{
-        $count++;
-        update_post_meta($postID, $count_key, $count);
-    }
+function setPostViews( $postID ) {
+    $count = (int) get_post_meta( $postID, 'post_views_count', true );
+	$count++;
+	update_post_meta( $postID, 'post_views_count', $count );
 }
 
-
-function trackPostViews ($postId) {
+function trackPostViews ( $postId ) {
     if ( !is_single() ) return;
+	
     if ( empty ( $postId) ) {
         global $post;
         $postId = $post->ID;    
     }
+	
     setPostViews($postId);
 }
 add_action( 'wp_head', 'trackPostViews');
-?>
